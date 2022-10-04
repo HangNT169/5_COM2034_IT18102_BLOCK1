@@ -1,59 +1,85 @@
--- 1. Nhắc lại về kiểu dữ liệu: int, float, nvarchar, varchar,bit,date....
--- 2. Cách khai báo biến 
--- 1.1 Cách khai báo
--- DECLARE @var_name data_type 
--- VD:
-DECLARE @year int 
--- Notes: 
--- 1. @var_name : tên của biến.Luôn luôn bắt đầu bằng @ 
--- 2. data_type: kiểu dữ liệu của biến 
+-- 1 Nhăc lai các loại kiẻu dữ liệu:
+--  nvarchar, varchar,int, date, bit....
+-- 2. Hướng dẫn cách khai báo biến
+-- DECLARE @var_name data type 
+--    + @var_name : là tên biến, luôn luôn bắt đầu bằng ký tự @ 
+--    + data_type : kiểu dữ liệu của biến 
+-- Bài 1: Tạo biến bằng lệnh Declare trong SQL 
+--  1.1: Cách tạo biến
+DECLARE @year INT
 -- 1.2: Gán giá trị cho biến
-SET @year = 2022 
--- SQL gán trá trị cho biến thông qua từ khoá SET và toán tử = value 
--- 1.3: Truy xuất giá trị của biến bằng SELECT 
---  Cú pháp: SELECT + tên biến
+SET @year = 2022
+-- 1.3: Truy xuất giá trị của biến
+--  Cú pháp: SELECT @ten_bien 
 SELECT @year
---  Bai 1: Tinh tong 3 so 
-DECLARE @number_first int , @number_second int
---  Bai 2: Tinh dien tich , chu vi cua hinh chu nhat
--- Notes: Có 2 loại biến: Biến vô hướng , biến bảng 
--- 1.4: Lưu trữ cả 1 câu truy vấn vào 
-DECLARE @soLuongTonLonNhat INT 
-SET @soLuongTonLonNhat = (SELECT MAX(soLuongTon) FROM ChiTietSP)
--- SELECT @soLuongTonLonNhat
-PRINT 'So luong max = '+ CONVERT(VARCHAR,@soLuongTonLonNhat)
--- 1.5: Biến bảng 
--- DECLARE @ten_bien TABLE(thuoc tinh kieu du liẹu)
 
-DECLARE @TB_NhanVien TABLE(id int, maNV varchar(50),tenNV nvarchar(50))
--- INSERT INTO @TB_NhanVien
--- VALUES(1,'10','abc');
+-- Bài tập: Tính tổng của 3 số nguyên
+DECLARE @b1 INT, @b2 INT, @b3 INT
+SET @b1 = 1
+SET @b2 = 1
+SET @b3 = 1
+SELECT (@b1 + @b2 + @b3)
 
-INSERT INTO @TB_NhanVien
-SELECT id,ma,ten
-FROM NhanVien 
-WHERE ten like 'T%'
+-- 1.3: Lữu trữ câu truy vấn vào biến 
+DECLARE @soLuongTonKhoLonNhat INT 
+SET @soLuongTonKhoLonNhat = (SELECT MAX(soLuongTon)
+FROM ChiTietSP)
+-- SELECT @soLuongTonKhoLonNhat
+PRINT N'Số lượng max = '+ CONVERT(VARCHAR,@soLuongTonKhoLonNhat)
+
+-- 1.4: Biến bảng
+DECLARE @TB_NhanVien TABLE
+(id INT , maNV VARCHAR(50),tenNV NVARCHAR(50))
+
+INSERT INTO @TB_NhanVien 
+VALUES(1,'HE130461',N'Hằng');
+
 SELECT * FROM @TB_NhanVien
 
--- T-SQL: Ngôn ngữ truy vấn cho phép tạo CSDL, thao tac dữ liệu
+-- T-SQL : Structured Query Langular : 
+-- Ngôn ngữ truy vấn có cấu trúc SQL 
+-- cho phép các bạn tạo CSDL hoặc là thao tác trên csdl
 -- Cú pháp:
--- BEGIN 
--- -- viết gì thì viết 
--- END 
+-- Begin
 
---  Có 4 nhóm lệnh SQL :
--- 1. Nhóm truy vấn dữ liệu ( DQL): gồm các truy cấn select 
--- => Lấy ra thông tin nhưng không làm thay đổi dữ liệu của bảng 
--- 2. Nhóm dùng để định nghĩa dư liệu (DDl): Create, Drop, alter...
--- 3. Nhóm thao tác dữ liệu(DML): Gồm các lệnh: Insert, Up[date, Delete....
--- => Nhóm làm thay đổi dữ liệu của 1 hoặc nhiều bảng 
--- 4. Nhóm điền khiển dữ liệu( DCL): quản lý : Grant, Revoke...
--- 1.7: Begin và End 
--- T-SQL: tổ chức theo từng khối lệnh.
---  Bắt đầu là Begin và kết thúc là end
--- Một khối lệnh có thể lồng bên trong 1 khối lênhj khác
--- Viết câu T-SQL hiển thị ds nhân viên bắt đầu bằng chữ T 
+-- END
+-- Có thể chia thành 4 nhóm lệnh SQL:
+--  + Nhóm truy vấn dữ liệu (DQL):  
+--      Gồm các lệnh truy vấn để lấy lựa chọn (SELECT)
+--        => Không thay đổi dữ liệu của bảng
+--  + Nhóm định nghĩa dữ liệu (DDL): 
+--       Gồm các lệnh tạo, thay đổi dữ liệu của bảng 
+--        (CREATE,ALTER,DROP ....)
+--  + Nhóm thao tác dữ liệu (DML): Gồm các lệnh làm thay đổi dữ liệu
+--        (INSERT, UPDATE,DELETE...) lưu trong các bảng
+--  + Nhóm điều khiẻn dữ liệu (DCL): Gồm các lệnh quản lý quyền truy cập
+--        vào dữ liệu và các bảng(Grant, Revoke...)
+
+-- 1.7: Begin và end 
+-- T-SQL tổ chức theo từng khối lệnh
+-- Một khối lệnh có thể lồng bên trong 1 khối lệnh khác
+-- Khối lệnh bắt đầu bằng BEGIN và kết thúc bởi END
+-- Bên trong khối lệnh có nhiều lệnh và các lệnh 
+-- sẽ ngăn cách nhau bởi dấu chấm phẩy 
+-- BEGIN
+--  {sql_statement | statement_block}
+-- END
+
+--  In ra số dòng của soLuongTon >900 
 BEGIN 
-    SELECT * FROM NhanVien
-    WHERE ten like 'T%'
+    SELECT * 
+    FROM ChiTietSP
+    WHERE soLuongTon >90
+
+    -- @@ROWCOUNT : Lấy ra số dòng của bản ghi
+    PRINT @@ROWCOUNT
+END
+
+BEGIN 
+DECLARE @soThuNhat FLOAT = 1, @soThuHai FLOAT = 2
+PRINT N'TỔNG: ' + CONVERT(VARCHAR,@soThuNhat + @soThuHai)
+PRINT N'HIỆU: ' + CONVERT(VARCHAR,@soThuNhat - @soThuHai)
+PRINT N'TÍCH: ' + CONVERT(VARCHAR,@soThuNhat * @soThuHai)
+PRINT N'THƯƠNG: ' + CONVERT(VARCHAR,@soThuNhat / @soThuHai)
 END 
+
